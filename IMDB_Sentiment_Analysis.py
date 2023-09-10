@@ -2,6 +2,12 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import string
+from sklearn.feature_extraction.text import CountVectorizer
+import nltk
+from nltk.corpus import stopwords
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.naive_bayes import MultinomialNB
 
 test_data = pd.read_csv('Test.csv')
 train_data = pd.read_csv('Train.csv')
@@ -19,15 +25,12 @@ y = data_class['label']
 data_example = data['text'].iloc[50]
 
 # Start of vectorization
-from sklearn.feature_extraction.text import CountVectorizer
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform([data_example])
 vectorizer.get_feature_names_out()
 print(X.toarray())
 
 # Clean the data using NLTK
-import nltk
-from nltk.corpus import stopwords
 nltk.download('stopwords')
 nltk.download('words')
 
@@ -45,13 +48,9 @@ text_vectorizer = CountVectorizer(analyzer= text_cleaning).fit(x)
 x = text_vectorizer.transform(x)
 
 # splitting the data
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-
 x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.25, random_state=110)
 
 # Using naive bayes to calculate the classification report and score
-from sklearn.naive_bayes import MultinomialNB
 
 mnb = MultinomialNB()
 mnb.fit(x_train, y_train)
